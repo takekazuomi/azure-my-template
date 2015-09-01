@@ -1,2 +1,1 @@
-# azure-my-template
-ARM templates kitchen‐sink
+# Azure Resource Manager Templates kitchen‐sink
