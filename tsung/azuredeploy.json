@@ -220,7 +220,7 @@
         "typeHandlerVersion": "1.3",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/takekazuomi/azure-my-templates/dev/tsung/install_tsung.sh"
+            "https://raw.githubusercontent.com/takekazuomi/azure-my-templates/tsung/tsung/install_tsung.sh"
           ],
           "commandToExecute": "sh install_tsung.sh"
         }
