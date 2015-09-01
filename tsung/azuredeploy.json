@@ -56,7 +56,7 @@
     },
     "ubuntuOSVersion": {
       "type": "string",
-      "defaultValue": "15.0414.04.2-LTS",
+      "defaultValue": "15.04",
       "allowedValues": [
         "12.04.5-LTS",
         "14.04.2-LTS",
@@ -217,7 +217,7 @@
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.3",
+        "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
             "https://raw.githubusercontent.com/takekazuomi/azure-my-templates/tsung/tsung/install_tsung.sh"
