@@ -69,7 +69,7 @@
     "count": {
       "type": "int",
       "defaultValue": 2,
-         "metadata": {
+      "metadata": {
         "description": "Instance count of tsung servers."
       }
     }
@@ -231,7 +231,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'),'/newuserscript')]",
+      "name": "[concat(concat(parameters('vmName'), copyIndex()),'/newuserscript')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -247,6 +247,10 @@
           ],
           "commandToExecute": "sh install_tsung.sh"
         }
+      },
+      "copy": {
+        "name": "ostcextensionscopy",
+        "count": "[parameters('count')]"
       }
     }
   ]
