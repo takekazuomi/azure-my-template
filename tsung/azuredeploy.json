@@ -65,6 +65,10 @@
       "metadata": {
         "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.04."
       }
+    },
+    "count": {
+      "type": "int",
+      "defaultValue": 2
     }
   },
   "variables": {
@@ -87,22 +91,30 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('newStorageAccountName')]",
+      "name": "[concat(parameters('newStorageAccountName'), copyIndex())]",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
+      },
+      "copy": {
+        "name": "storagecopy",
+        "count": "[parameters('count')]"
       }
     },
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName')]",
+      "name": "concat([variables('publicIPAddressName'), copyIndex())]",
       "location": "[parameters('location')]",
       "properties": {
         "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
         "dnsSettings": {
           "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+        },
+        "copy": {
+          "name": "publicipcopy",
+          "count": "[parameters('count')]"
         }
       }
     },
@@ -133,8 +145,8 @@
       "name": "[variables('nicName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[concat(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), copyIndex())]",
+        "[concat(concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName')), copyIndex())]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -151,6 +163,10 @@
             }
           }
         ]
+      },
+      "copy": {
+        "name": "networkifcopy",
+        "count": "[parameters('count')]"
       }
     },
     {
@@ -159,15 +175,15 @@
       "name": "[parameters('vmName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat(concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), copyIndex())]",
+        "[concat(concat('Microsoft.Network/networkInterfaces/', variables('nicName')), copyIndex())]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[parameters('vmName')]",
+          "computerName": "[concat(parameters('vmName'), copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
@@ -191,7 +207,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/', variables('osDiskName'),'.vhd')]"
+              "uri": "[concat('http://',concat(parameters('newStorageAccountName'), copyIndex()),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/', variables('osDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -200,19 +216,23 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName')), copyIndex())]"
             }
           ]
         }
+      },
+      "copy": {
+        "name": "vmcopy",
+        "count": "[parameters('count')]"
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'),'/newuserscript')]",
+      "name": "[concat(concat(variables('vmName'), copyIndex()),'/newuserscript')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyIndex()))]"
       ],
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
