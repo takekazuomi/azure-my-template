@@ -68,7 +68,10 @@
     },
     "count": {
       "type": "int",
-      "defaultValue": 2
+      "defaultValue": 2,
+         "metadata": {
+        "description": "Instance count of tsung servers."
+      }
     }
   },
   "variables": {
