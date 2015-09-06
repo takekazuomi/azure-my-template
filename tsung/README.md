@@ -12,6 +12,9 @@ MEMO
 https://github.com/Azure/azure-linux-extensions/tree/master/CustomScript
 
 
+Switch-AzureMode AzureResourceManager
+New-AzureResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group-name> -TemplateUri https://raw.githubusercontent.com/takekazuomi/azure-my-templates/tsung/tsung/azuredeploy.json
+
 
 $ mkdir ~/.tsung/
 $ cp /usr/share/doc/tsung/examples/http_simple.xml ~/.tsung/tsung.xmla
