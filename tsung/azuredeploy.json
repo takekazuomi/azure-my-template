@@ -151,6 +151,10 @@
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'), copyIndex())]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
+      "copy": {
+        "name": "networkifcopy",
+        "count": "[parameters('count')]"
+      },
       "properties": {
         "ipConfigurations": [
           {
@@ -166,10 +170,6 @@
             }
           }
         ]
-      },
-      "copy": {
-        "name": "networkifcopy",
-        "count": "[parameters('count')]"
       }
     },
     {
@@ -181,6 +181,10 @@
         "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'), copyIndex())]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]"
       ],
+      "copy": {
+        "name": "vmcopy",
+        "count": "[parameters('count')]"
+      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
@@ -223,10 +227,6 @@
             }
           ]
         }
-      },
-      "copy": {
-        "name": "vmcopy",
-        "count": "[parameters('count')]"
       }
     },
     {
@@ -237,6 +237,10 @@
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('vmName'), copyIndex()))]"
       ],
+      "copy": {
+        "name": "ostcextensionscopy",
+        "count": "[parameters('count')]"
+      },
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
@@ -247,10 +251,6 @@
           ],
           "commandToExecute": "sh install_tsung.sh"
         }
-      },
-      "copy": {
-        "name": "ostcextensionscopy",
-        "count": "[parameters('count')]"
       }
     }
   ]
