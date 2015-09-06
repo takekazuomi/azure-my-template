@@ -115,10 +115,10 @@
         "dnsSettings": {
           "domainNameLabel": "[concat(parameters('dnsNameForPublicIP'), copyIndex())]"
         },
-        "copy": {
-          "name": "publicipcopy",
-          "count": "[parameters('count')]"
-        }
+      },
+      "copy": {
+        "name": "publicipcopy",
+        "count": "[parameters('count')]"
       }
     },
     {
