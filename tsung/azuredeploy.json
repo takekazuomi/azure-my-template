@@ -97,12 +97,12 @@
       "name": "[concat(parameters('newStorageAccountName'), copyIndex())]",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      },
       "copy": {
         "name": "storagecopy",
         "count": "[parameters('count')]"
+      },
+      "properties": {
+        "accountType": "[variables('storageAccountType')]"
       }
     },
     {
