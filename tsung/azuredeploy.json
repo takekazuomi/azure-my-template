@@ -148,8 +148,8 @@
       "name": "[concat(variables('nicName'), copyIndex())]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName')), copyIndex())]",
-        "[concat(concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName')), copyIndex())]"
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'), copyIndex())]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'), copyIndex())]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -178,8 +178,8 @@
       "name": "[concat(parameters('vmName'), copyIndex())]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat(concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), copyIndex())]",
-        "[concat(concat('Microsoft.Network/networkInterfaces/', variables('nicName')), copyIndex())]"
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'), copyIndex())]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -231,7 +231,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(parameters('vmName'), copyIndex()),'/newuserscript')]",
+      "name": "[concat(parameters('vmName'), copyIndex(),'/newuserscript')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[parameters('location')]",
       "dependsOn": [
