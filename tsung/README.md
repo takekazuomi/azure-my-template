@@ -13,10 +13,11 @@ https://github.com/Azure/azure-linux-extensions/tree/master/CustomScript
 
 
 ````
+#New-AzureResourceGroup -Name $namerg  -Location "Japan West"
 Switch-AzureMode AzureResourceManager
 
-$name = yamasa
-$namerg = yamasarg
+$name = "yamasa"
+$namerg = "yamasarg"
 
 New-AzureResourceGroupDeployment -Name $name -ResourceGroupName $namerg -newStorageAccountName $name -adminUserName {foobar} -vmName $name -sshKeyData "$(Get-Content ~\.ssh\id_rsa.pub)" -dnsNameForPublicIP $name -location "Japan West" -count 2 -vmSize "Standard_A1" -ubuntuOSVersion 15.04 -TemplateUri https://raw.githubusercontent.com/takekazuomi/azure-my-templates/tsung/tsung/azuredeploy.json
 ````
